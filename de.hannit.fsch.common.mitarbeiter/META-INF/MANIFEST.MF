@@ -7,4 +7,7 @@ Bundle-Activator: de.hannit.fsch.common.mitarbeiter.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
-Export-Package: de.hannit.fsch.common.mitarbeiter
+Export-Package: de.hannit.fsch.common.mitarbeiter,
+ de.hannit.fsch.common.mitarbeiter.besoldung
+Require-Bundle: de.hannit.fsch.common.csv.azv,
+ org.eclipse.jface

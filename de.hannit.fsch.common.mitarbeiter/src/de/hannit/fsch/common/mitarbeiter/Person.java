@@ -10,8 +10,8 @@ package de.hannit.fsch.common.mitarbeiter;
  */
 public class Person 
 {
-private String nachname;
-private String vorname;
+private String nachname = null;
+private String vorname = null;
 
 	/**
 	 * 
