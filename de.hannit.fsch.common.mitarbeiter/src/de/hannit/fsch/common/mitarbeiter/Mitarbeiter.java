@@ -107,7 +107,6 @@ private int azvProzentSumme = 0;
 		brutto = ((this.brutto /100) * a.getProzentanteil());	
 		// brutto = ((this.vollzeitAequivalent * this.stellenAnteil) / 100) * a.getProzentanteil();
 		a.setBruttoAufwand(brutto);
-		System.out.println(this.getNachname() + " " + a.getProzentanteil() + ";" + NumberFormat.getCurrencyInstance().format(brutto));
 		}
 	}
 
