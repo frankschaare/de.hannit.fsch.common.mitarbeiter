@@ -1,6 +1,5 @@
 package de.hannit.fsch.common.mitarbeiter.besoldung;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.TreeMap;
@@ -19,7 +18,6 @@ private double summeVollzeitAequivalent = 0;
 private int anzahlMitarbeiter = 0;
 private Date berichtsMonat = null;
 private String label;
-private DecimalFormat f = new DecimalFormat("#0,00"); 
 
 	public Tarifgruppen()
 	{

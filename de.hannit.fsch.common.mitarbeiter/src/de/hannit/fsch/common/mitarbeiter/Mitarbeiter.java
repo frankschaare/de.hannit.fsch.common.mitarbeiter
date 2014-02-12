@@ -3,7 +3,6 @@
  */
 package de.hannit.fsch.common.mitarbeiter;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TreeMap;
@@ -16,7 +15,15 @@ import de.hannit.fsch.common.csv.azv.Arbeitszeitanteil;
  */
 public class Mitarbeiter extends Person 
 {
+public static final int STATUS_SONSTIGE = 0;
+public static final int STATUS_ANGESTELLTER = 1;
+public static final int STATUS_BEAMTER = 2;
+public static final int STATUS_AUSZUBILDENDER = 3;
+public static final int STATUS_ALTERSTEILZEIT = 4;
+public static final int STATUS_ELTERNZEIT = 5;
+
 private int personalNR = 0;
+private int status = -1;
 private String benutzerName;
 private Date abrechnungsMonat = null;
 private double brutto;
@@ -53,6 +60,9 @@ private int azvProzentSumme = 0;
 
 	public int getPersonalNR() {return personalNR;}
 	public void setPersonalNR(int personalNR) {this.personalNR = personalNR;}
+
+	public int getStatus(){return status;}
+	public void setStatus(int status){this.status = status;}
 
 	public String getBenutzerName() {return benutzerName;}
 	public void setBenutzerName(String benutzerName) {this.benutzerName = benutzerName;}
@@ -111,7 +121,111 @@ private int azvProzentSumme = 0;
 	}
 
 	public String getTarifGruppe(){return tarifGruppe;}
-	public void setTarifGruppe(String tarifGruppe){this.tarifGruppe = tarifGruppe;}
+	
+	/**
+	 * Legt die Tarifgruppe fest, in der der Mitarbeiter bezahlt wurde.
+	 * Anhand der Tarifgruppe wird festgestellt, in welchem Beschaftigungsverhältnis der Mitarbeiter
+	 * im aktuellen Monat stand.
+	 */
+	public void setTarifGruppe(String tarifGruppe)
+	{
+	this.tarifGruppe = tarifGruppe;
+
+		switch (tarifGruppe)
+		{
+		case "5":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "6":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "7":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "8":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "9":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "10":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "11":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "12":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "13":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "14":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "15":
+		setStatus(STATUS_ANGESTELLTER);	
+		break;
+		
+		case "A8":
+		setStatus(STATUS_BEAMTER);	
+		break;
+		
+		case "A9":
+		setStatus(STATUS_BEAMTER);	
+		break;	
+		
+		case "A9mD":
+		setStatus(STATUS_BEAMTER);	
+		break;
+		
+		case "A10":
+		setStatus(STATUS_BEAMTER);	
+		break;	
+		
+		case "A11":
+		setStatus(STATUS_BEAMTER);	
+		break;
+		
+		case "A12":
+		setStatus(STATUS_BEAMTER);	
+		break;	
+		
+		case "A13":
+		setStatus(STATUS_BEAMTER);	
+		break;	
+		
+		case "A14":
+		setStatus(STATUS_BEAMTER);	
+		break;	
+		
+		case "A15":
+		setStatus(STATUS_BEAMTER);	
+		break;	
+		
+		case "A16":
+		setStatus(STATUS_BEAMTER);	
+		break;	
+		
+		case "AZU":
+		setStatus(STATUS_AUSZUBILDENDER);	
+		break;		
+
+		default:
+		setStatus(STATUS_SONSTIGE);	
+		break;
+		}
+	}
 
 	public String getTarifStufe(){return tarifStufe;}
 	public void setTarifStufe(String tarifStufe){this.tarifStufe = tarifStufe;}
