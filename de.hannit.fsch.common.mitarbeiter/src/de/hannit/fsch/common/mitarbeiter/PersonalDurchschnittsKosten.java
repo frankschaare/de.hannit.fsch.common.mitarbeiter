@@ -3,7 +3,6 @@
  */
 package de.hannit.fsch.common.mitarbeiter;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +17,12 @@ import de.hannit.fsch.common.csv.azv.Arbeitszeitanteil;
 /**
  * Bei den Personaldurchschnittskosten werden die Vollzeitäquivalente
  * unterteilt nach den Teams und dort wiederum unterteilt nach Beamten / Angestellten dargestellt.
+ * 
+ * Davon abgezogen werden alle Mitarbeiter, deren Tätigkeit auf Vorkostenstellen gebucht wird.
+ * Dies sind:
+ * - die Geschäftsführung
+ * - alle Mitarbeiter von Team 1
+ * - alle passiven Altersteilzeitler
  * 
  * Diese Werte werden in Navision bei der Verteilung der Umlage 002 und 003 benötigt.
  * 
@@ -41,7 +46,8 @@ private TreeMap<Integer, Mitarbeiter> mitarbeiter;
 private TreeMap<Integer, Team> teams = new TreeMap<Integer, Team>();	
 private Date berichtsMonat = null;
 private String label;
-private DecimalFormat kommaZahl= new DecimalFormat("0,00");
+private boolean checked = false;
+private boolean datenOK = false;
 
 	/**
 	 * 
@@ -372,7 +378,10 @@ private DecimalFormat kommaZahl= new DecimalFormat("0,00");
 		}
 	return label;
 	}
-	
-	
+public boolean isChecked(){return checked;}
+public void setChecked(boolean checked){this.checked = checked;}	
+
+public boolean isDatenOK(){return datenOK;}
+public void setDatenOK(boolean ok){this.datenOK = ok;}	
 
 }
