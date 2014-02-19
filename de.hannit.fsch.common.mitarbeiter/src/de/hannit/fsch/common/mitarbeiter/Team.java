@@ -14,6 +14,8 @@ public class Team
 private int teamNummer = -1;
 private TreeMap<Integer, Mitarbeiter> angestellte = new TreeMap<Integer, Mitarbeiter>();
 private TreeMap<Integer, Mitarbeiter> beamte = new TreeMap<Integer, Mitarbeiter>();
+private TreeMap<Integer, Mitarbeiter> mitarbeitAufVorkostenstellen = new TreeMap<Integer, Mitarbeiter>();
+private TreeMap<Integer, Mitarbeiter> mitarbeitAltersteilzeit = new TreeMap<Integer, Mitarbeiter>();
 
 	/**
 	 * 
@@ -35,8 +37,31 @@ private TreeMap<Integer, Mitarbeiter> beamte = new TreeMap<Integer, Mitarbeiter>
 		angestellte.put(m.getPersonalNR(), m);	
 		break;
 		}
+		/*
+		 * Für die Teamnummern 0 und 1 werden alle Mitarbeiter auf Vorkostenstellen gebucht.
+		 * Sie werden daher zusätzlich in der Liste mitarbeitAufVorkostenstellen gesichert
+		 * und später bei der Berechnung herausgenommen.
+		 */
+		switch (this.teamNummer)
+		{
+		case 0:
+		mitarbeitAufVorkostenstellen.put(m.getPersonalNR(), m);	
+		break;
+
+		case 1:
+		mitarbeitAufVorkostenstellen.put(m.getPersonalNR(), m);	
+		break;
+
+		default:
+		break;
+		}
 	}
 	
+	public TreeMap<Integer, Mitarbeiter> getMitarbeitAufVorkostenstellen()
+	{
+	return mitarbeitAufVorkostenstellen;
+	}
+
 	public String getOE()
 	{
 	String strOE = null;

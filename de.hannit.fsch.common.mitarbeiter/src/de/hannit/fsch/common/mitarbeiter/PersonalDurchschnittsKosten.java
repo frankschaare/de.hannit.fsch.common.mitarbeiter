@@ -4,7 +4,6 @@
 package de.hannit.fsch.common.mitarbeiter;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.TreeMap;
 
@@ -149,6 +148,24 @@ private boolean datenOK = false;
 	
 	return sumBruttoAngestellte;	
 	}
+
+	/**
+	 * Summe der Stellen auf Vorkostenstellen
+	 * @param teamNR
+	 * @return
+	 */
+	public double getSummeVorkostenstellen(int teamNR)
+	{
+	double sumVorkostenstellen = 0;
+	Team t = teams.get(teamNR);
+	
+		for (Mitarbeiter m : t.getMitarbeitAufVorkostenstellen().values())
+		{
+		sumVorkostenstellen -= m.getStellenAnteil();	
+		}
+	
+	return sumVorkostenstellen;	
+	}
 	
 	/**
 	 * Summe der Vollzeitäquivalente für alle Angestellten des Teams
@@ -202,11 +219,13 @@ private boolean datenOK = false;
 	return sumVZAEBeamte;	
 	}		
 	
-	public ArrayList<String> getSummentabelle()
+	public TreeMap<Integer, SummenZeile> getSummentabelle()
 	{
-	ArrayList<String> summenTabelle = new ArrayList<String>();
+	TreeMap<Integer, SummenZeile> summenTabelle = new TreeMap<Integer, SummenZeile>();
 	int teamNR = -1;
-	String strSumme = null;
+	int anzahlSummenZeilen = 0;
+	SummenZeile sz = null;
+	
 	double sumBruttoAngestellte = 0;
 	double sumBruttoAngestellteGesamt = 0;
 	double sumVZAEAngestellte = 0;
@@ -215,43 +234,71 @@ private boolean datenOK = false;
 	double sumBruttoBeamteGesamt = 0;
 	double sumVZAEBeamte = 0;
 	double sumVZAEBeamteGesamt = 0;
+	double abzugVorkostenStelle = 0;
+	double sumEndkostenstelle = 0;
+	double sumEndkostenstellenGesamt = 0;
 	
 		for (Team t : teams.values())
 		{
+		sz = new SummenZeile();	
+		// Spalte 1: Organisationseinheit
 		teamNR = t.getTeamNummer();	
+		sz.setColumn0(t.getOE());
 		
+		// Spalte 2: Summe Brutto Angestellte
 		sumBruttoAngestellte = getSummeBruttoAngestellte(teamNR);
+		sz.setColumn1(NumberFormat.getCurrencyInstance().format(sumBruttoAngestellte));
 		sumBruttoAngestellteGesamt += sumBruttoAngestellte;
 		
+		// Spalte 3: Summe VZÄ Angestellte		
 		sumVZAEAngestellte = getSummeVZAEAngestellte(teamNR);
+		sz.setColumn2(String.valueOf(sumVZAEAngestellte));
 		sumVZAEAngestellteGesamt += sumVZAEAngestellte;
 		
+		// Spalte 4: Summe Brutto Beamte		
 		sumBruttoBeamte = getSummeBruttoBeamte(teamNR);
+		sz.setColumn3(NumberFormat.getCurrencyInstance().format(sumBruttoBeamte));
 		sumBruttoBeamteGesamt += sumBruttoBeamte;
 		
+		// Spalte 5: Summe VZÄ Beamte
 		sumVZAEBeamte = getSummeVZAEBeamte(teamNR);
+		sz.setColumn4(String.valueOf(sumVZAEBeamte));
 		sumVZAEBeamteGesamt += sumVZAEBeamte;
 		
-		strSumme = t.getOE() + ";" + NumberFormat.getCurrencyInstance().format(sumBruttoAngestellte) + ";" + sumVZAEAngestellte + ";" + NumberFormat.getCurrencyInstance().format(sumBruttoBeamte) + ";" + sumVZAEBeamte + ";" + NumberFormat.getCurrencyInstance().format((sumBruttoAngestellte + sumBruttoBeamte)) + ";" + (sumVZAEAngestellte + sumVZAEBeamte); 
+		// Spalte 6: Gesamtsumme Brutto
+		sz.setColumn5(NumberFormat.getCurrencyInstance().format((sumBruttoAngestellte + sumBruttoBeamte)));
+		// Spalte 7: Gesamtsumme VZÄ		
+		sz.setColumn6(String.valueOf((sumVZAEAngestellte + sumVZAEBeamte)));
+		// Spalte 8: Abzug Vorkostenstellen
+		sz.setColumn7(String.valueOf(getSummeVorkostenstellen(teamNR)));
+		// Spalte 9: Summe Endkostenstellen
+		sumEndkostenstelle = (sumVZAEAngestellte + sumVZAEBeamte) + getSummeVorkostenstellen(teamNR);
+		sumEndkostenstellenGesamt += sumEndkostenstelle;
+		sz.setColumn8(String.valueOf(sumEndkostenstelle));		
 		
-		summenTabelle.add(strSumme);
+		summenTabelle.put(teamNR, sz);
+		anzahlSummenZeilen += 1;
 		}
-	strSumme = " ; ; ; ; ; ; ; ;";
-	summenTabelle.add(strSumme);
-		
-	strSumme = "Summen:;" + NumberFormat.getCurrencyInstance().format(sumBruttoAngestellteGesamt) + ";" + sumVZAEAngestellteGesamt + ";" + NumberFormat.getCurrencyInstance().format(sumBruttoBeamteGesamt) + ";" + sumVZAEBeamteGesamt + ";" + NumberFormat.getCurrencyInstance().format((sumBruttoAngestellteGesamt + sumBruttoBeamteGesamt)) + ";" + (sumVZAEAngestellteGesamt + sumVZAEBeamteGesamt);
-	summenTabelle.add(strSumme);
+	sz = new SummenZeile();
+	sz.setLeerZeile();
+	summenTabelle.put(anzahlSummenZeilen, sz);
+	anzahlSummenZeilen += 1;
+	
+	// Gesamtsummenzeile	
+	sz = new SummenZeile();
+	sz.setColumn0("Summen:");
+	sz.setColumn1(NumberFormat.getCurrencyInstance().format(sumBruttoAngestellteGesamt));
+	sz.setColumn2(String.valueOf(sumVZAEAngestellteGesamt));
+	sz.setColumn3(NumberFormat.getCurrencyInstance().format(sumBruttoBeamteGesamt));
+	sz.setColumn4(String.valueOf(sumVZAEBeamteGesamt));
+	sz.setColumn5(NumberFormat.getCurrencyInstance().format((sumBruttoAngestellteGesamt + sumBruttoBeamteGesamt)));
+	sz.setColumn6(String.valueOf((sumVZAEAngestellteGesamt + sumVZAEBeamteGesamt)));
+	sz.setColumn7("");
+	sz.setColumn8(String.valueOf(sumEndkostenstellenGesamt));
+	
+	summenTabelle.put(anzahlSummenZeilen, sz);
 	
 	return summenTabelle;
-	}
-	
-	public void printSummenTabelle()
-	{
-	ArrayList<String> summenTabelle = getSummentabelle();
-		for (String string : summenTabelle)
-		{
-		System.out.println(string);	
-		}
 	}
 	
 	public void setMitarbeiter(TreeMap<Integer, Mitarbeiter> mitarbeiter)
@@ -339,37 +386,45 @@ private boolean datenOK = false;
 	@Override
 	public String getColumnText(Object element, int columnIndex)
 	{
-	String strValues = (String) element;
-	String[] parts	= strValues.split(";");
+	SummenZeile sz = (SummenZeile) element;
+	
 		switch (columnIndex) 
 		{
 		case 0:
-		label = parts[0];
+		label = sz.getColumn0();
 		break;
 		
 		case 1:
-		label = parts[1];
+		label = sz.getColumn1();
 		break;
 		
 		case 2:
-		label = parts[2];
+		label = sz.getColumn2();
 		break;
 		
 		case 3:
-		label = parts[3];
+		label = sz.getColumn3();
 		break;
 		
 		case 4:
-		label = parts[4];
+		label = sz.getColumn4();
 		break;		
 		
 		case 5:
-		label = parts[5];
+		label = sz.getColumn5();
 		break;		
 		
 		case 6:
-		label = parts[6];
+		label = sz.getColumn6();
 		break;		
+
+		case 7:
+		label = sz.getColumn7();
+		break;		
+		
+		case 8:
+		label = sz.getColumn8();
+		break;				
 		
 		default:
 		label = " ";
