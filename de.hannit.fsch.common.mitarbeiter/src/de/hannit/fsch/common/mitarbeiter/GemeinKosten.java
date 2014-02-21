@@ -60,6 +60,7 @@ private TreeMap<Integer, Mitarbeiter> team2 = new TreeMap<Integer, Mitarbeiter>(
 private TreeMap<Integer, Mitarbeiter> team3 = new TreeMap<Integer, Mitarbeiter>();
 private TreeMap<Integer, Mitarbeiter> team4 = new TreeMap<Integer, Mitarbeiter>();
 private TreeMap<Integer, TreeMap<Integer, Mitarbeiter>> teams = new TreeMap<Integer, TreeMap<Integer, Mitarbeiter>>();
+private String aktuellesTeam = null;
 
 private DecimalFormat d = new DecimalFormat("#0.00"); 
 
@@ -178,6 +179,11 @@ private boolean datenOK = false;
 	}
 
 	
+	public String getAktuellesTeam()
+	{
+		return aktuellesTeam;
+	}
+
 	public TreeMap<Integer, Integer> getGesamtsummenProzentanteile()
 	{
 	return gesamtsummenProzentanteile;
@@ -190,7 +196,7 @@ private boolean datenOK = false;
 
 	public TreeMap<String, Arbeitszeitanteil> getAufteilungGemeinKosten()
 	{
-	return aufteilungGemeinKosten;
+	return aufteilungGemeinKosten != null ? aufteilungGemeinKosten : new TreeMap<String, Arbeitszeitanteil>();
 	}
 
 	/*
@@ -210,24 +216,28 @@ private boolean datenOK = false;
 		{
 		case ENDKOSTENSTELLE_TEAM1:
 		teamNR = 1;	
+		aktuellesTeam = "1";
 		team = teams.get(teamNR);
 		gesamtSummeProzentAnteile = gesamtsummenProzentanteile.get(teamNR);
 		break;
 		
 		case ENDKOSTENSTELLE_TEAM2:
 		teamNR = 2;
+		aktuellesTeam = "2";		
 		team = teams.get(teamNR);
 		gesamtSummeProzentAnteile = gesamtsummenProzentanteile.get(teamNR);
 		break;
 		
 		case ENDKOSTENSTELLE_TEAM3:
 		teamNR = 3;	
+		aktuellesTeam = "3";		
 		team = teams.get(teamNR);
 		gesamtSummeProzentAnteile = gesamtsummenProzentanteile.get(teamNR);
 		break;		
 		
 		default:
 		teamNR = 4;	
+		aktuellesTeam = "4";		
 		team = teams.get(teamNR);
 		gesamtSummeProzentAnteile = gesamtsummenProzentanteile.get(teamNR);
 		break;
@@ -297,7 +307,9 @@ private boolean datenOK = false;
 		setAufteilungGemeinKosten();	
 		}
 	}
-
+	
+	public String getVorkostenStelle(){return this.vorkostenStelle;}
+	
 	@Override
 	public void addListener(ILabelProviderListener listener)
 	{
