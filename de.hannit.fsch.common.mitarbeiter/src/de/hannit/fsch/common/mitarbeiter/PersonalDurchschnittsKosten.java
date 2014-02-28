@@ -60,6 +60,11 @@ private boolean datenOK = false;
 	{
 	return mitarbeiter;
 	}
+	
+	public TreeMap<Integer, Team> getTeams()
+	{
+	return teams;
+	}
 
 	/**
 	 * Gesamtsumme aller Bruttoaufwendungen 

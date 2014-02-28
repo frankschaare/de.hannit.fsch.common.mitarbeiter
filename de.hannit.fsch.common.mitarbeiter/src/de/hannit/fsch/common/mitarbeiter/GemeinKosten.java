@@ -69,6 +69,12 @@ private DecimalFormat d = new DecimalFormat("#0.00");
  */
 private double verteilungsSumme = 0;
 /**
+ * Die Summe der zu errechneten Gemeinkostenanteile
+ * Wird zur Prüfung verwendet
+ */
+private double summeGemeinkostenanteile = 0;
+
+/**
  * Vorkostenstelle, von der aus auf die Kostenträger verteilt wird.
  */
 private String vorkostenStelle = null;
@@ -137,8 +143,7 @@ private boolean datenOK = false;
 	teams.put(3, team3);
 	teams.put(4, team4);
 	
-	setGesamtsummeProzentanteile();
-		
+	setGesamtsummeProzentanteile();	
 	}
 	
 	/*
@@ -181,7 +186,7 @@ private boolean datenOK = false;
 	
 	public String getAktuellesTeam()
 	{
-		return aktuellesTeam;
+	return aktuellesTeam;
 	}
 
 	public TreeMap<Integer, Integer> getGesamtsummenProzentanteile()
@@ -283,29 +288,37 @@ private boolean datenOK = false;
 		azv.setAnteilGemeinkosten((verteilungsSumme / 100) * azv.getProzentanteilGemeinkosten());
 		}
 		
+		/*
+		 * Hier werden die errechneten Gemeinkostenanteile noch einmal zusammengezählt.
+		 * Wäre schon schön, wenn die Summe der errechneten Gemeinkostenanteile = der Verteilungssumme ist 
+		 */
+		summeGemeinkostenanteile = 0;
 		for (Arbeitszeitanteil azv : aufteilungGemeinKosten.values())
 		{
+		summeGemeinkostenanteile += azv.getAnteilGemeinkosten();	
 		System.out.println(azv.getKostentraeger()+";"+azv.getProzentanteilGemeinkosten()+";"+ NumberFormat.getCurrencyInstance().format(azv.getAnteilGemeinkosten()));	
 		}		
 		
 	}
 
+	public double getSummeGemeinkostenanteile()
+	{
+	return summeGemeinkostenanteile;
+	}
+
 	public void setVerteilungsSumme(double verteilungsSumme)
 	{
 	this.verteilungsSumme = verteilungsSumme;
-		if (this.vorkostenStelle != null)
-		{
-		setAufteilungGemeinKosten();	
-		}
+	}
+	
+	public double getVerteilungsSumme()
+	{
+	return verteilungsSumme;
 	}
 
 	public void setVorkostenStelle(String vorkostenStelle)
 	{
 	this.vorkostenStelle = vorkostenStelle;
-		if (this.verteilungsSumme > 0)
-		{
-		setAufteilungGemeinKosten();	
-		}
 	}
 	
 	public String getVorkostenStelle(){return this.vorkostenStelle;}
