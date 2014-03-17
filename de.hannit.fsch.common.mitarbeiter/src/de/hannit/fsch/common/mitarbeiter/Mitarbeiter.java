@@ -60,6 +60,8 @@ private int azvProzentSumme = 0;
 
 	public int getPersonalNR() {return personalNR;}
 	public void setPersonalNR(int personalNR) {this.personalNR = personalNR;}
+	public void setPersonalNRAsString(String personalNR){this.personalNR = Integer.parseInt(personalNR);}
+	public String getPersonalNRAsString() {return String.valueOf(personalNR);}
 
 	public int getStatus(){return status;}
 	public void setStatus(int status){this.status = status;}
