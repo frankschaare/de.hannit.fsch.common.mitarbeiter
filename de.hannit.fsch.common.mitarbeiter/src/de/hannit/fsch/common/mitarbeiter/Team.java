@@ -12,6 +12,8 @@ import java.util.TreeMap;
 public class Team
 {
 private int teamNummer = -1;
+private String teamBezeichnung = null;
+private TreeMap<String, Mitarbeiter> teamMitglieder = new TreeMap<String, Mitarbeiter>();
 private TreeMap<Integer, Mitarbeiter> angestellte = new TreeMap<Integer, Mitarbeiter>();
 private TreeMap<Integer, Mitarbeiter> beamte = new TreeMap<Integer, Mitarbeiter>();
 private TreeMap<Integer, Mitarbeiter> mitarbeitAufVorkostenstellen = new TreeMap<Integer, Mitarbeiter>();
@@ -27,6 +29,8 @@ private TreeMap<Integer, Mitarbeiter> mitarbeitAltersteilzeit = new TreeMap<Inte
 
 	public void addMitarbeiter(Mitarbeiter m)
 	{
+	teamMitglieder.put(m.getNachname(), m);
+	
 		switch (m.getStatus())
 		{
 		case Mitarbeiter.STATUS_BEAMTER:
@@ -57,10 +61,8 @@ private TreeMap<Integer, Mitarbeiter> mitarbeitAltersteilzeit = new TreeMap<Inte
 		}
 	}
 	
-	public TreeMap<Integer, Mitarbeiter> getMitarbeitAufVorkostenstellen()
-	{
-	return mitarbeitAufVorkostenstellen;
-	}
+	public TreeMap<String, Mitarbeiter> getTeamMitglieder(){return teamMitglieder;}
+	public TreeMap<Integer, Mitarbeiter> getMitarbeitAufVorkostenstellen(){return mitarbeitAufVorkostenstellen;}
 
 	public String getOE()
 	{
@@ -78,14 +80,26 @@ private TreeMap<Integer, Mitarbeiter> mitarbeitAltersteilzeit = new TreeMap<Inte
 	return strOE;
 	}
 	
-	public int getTeamNummer()
-	{
-		return teamNummer;
-	}
-
+	public int getTeamNummer(){	return teamNummer;}
+	
+	public String getTeamBezeichnung(){return this.teamBezeichnung;}
 	public void setTeamNummer(int teamNummer)
 	{
-		this.teamNummer = teamNummer;
+	this.teamNummer = teamNummer;
+	
+		switch (teamNummer)
+		{
+		case 0:
+		this.teamBezeichnung = "Vorstand";	
+		break;
+		case 9:
+		this.teamBezeichnung = "Vorstand";	
+		break;
+
+		default:
+		this.teamBezeichnung = "Team " + String.valueOf(teamNummer);	
+		break;
+		}
 	}
 
 	public TreeMap<Integer, Mitarbeiter> getAngestellte()

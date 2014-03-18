@@ -23,6 +23,7 @@ public static final int STATUS_ALTERSTEILZEIT = 4;
 public static final int STATUS_ELTERNZEIT = 5;
 
 private int personalNR = 0;
+private int teamNR = -1;
 private int status = -1;
 private String benutzerName;
 private Date abrechnungsMonat = null;
@@ -58,6 +59,7 @@ private int azvProzentSumme = 0;
 	public TreeMap<String, Arbeitszeitanteil> getAzvMonat() {return azvMonat;}
 	public void setAzvMonat(TreeMap<String, Arbeitszeitanteil> azvMonat) {this.azvMonat = azvMonat;}
 
+	public int getTeamNR() {return azvMonat != null ? azvMonat.get(azvMonat.firstKey()).getITeam(): teamNR;}
 	public int getPersonalNR() {return personalNR;}
 	public void setPersonalNR(int personalNR) {this.personalNR = personalNR;}
 	public void setPersonalNRAsString(String personalNR){this.personalNR = Integer.parseInt(personalNR);}
